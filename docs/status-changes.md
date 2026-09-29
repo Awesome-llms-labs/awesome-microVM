@@ -4,6 +4,7 @@ Newest first. Archived projects, deprecations, migrations, and other status even
 
 ## 2026
 
+- **macOS section added (2026-09-29)** — shuru, vfkit, Tart, Lima; Tart repo moved `cirruslabs/tart` → `openai/tart` (Fair Source license, not OSI-approved).
 - **Kata Containers 4.0.0** — Rust `runtime-rs` (with built-in Dragonball VMM) became the production default; the Go runtime is deprecated (bug/CVE fixes only, no new features).
 - **Cloud Hypervisor v53.0** — postcopy/on-demand-paging live migration, mTLS-secured migration, VFIO migration v2.
 - **libkrun moved to the `libkrun` GitHub org** (from `containers/libkrun`); `main` is now the unstable 2.0 development line — stable `stable-*` branches recommended for production.
