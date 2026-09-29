@@ -33,7 +33,7 @@ jobs:
           assert isinstance(data, list) and data, "must be a non-empty list"
           required = {"name", "url", "description", "language", "license",
                       "license_verified", "status", "category", "features"}
-          cats = {"vmm", "orchestration", "platform", "archived"}
+          cats = {"vmm", "orchestration", "platform", "archived", "macos"}
           statuses = {"active", "maintenance", "archived", "commercial"}
           for i, e in enumerate(data):
               missing = required - e.keys()
