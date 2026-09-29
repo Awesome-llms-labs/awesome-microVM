@@ -17,6 +17,7 @@ A microVM is a hardware-virtualized VM stripped to the essentials: a minimal VMM
 
 - [MicroVMs & Lightweight VMMs](#microvms--lightweight-vmms) — the monitors themselves
 - [Orchestration & Integration](#orchestration--integration) — lifecycle tooling on top of VMMs
+- [MicroVMs on macOS](#microvms-on-macos) — the Mac story: Virtualization.framework sandboxes
 - [Managed Platforms & Production Users](#managed-platforms--production-users) — who's running what
 - [Benchmarks & Comparisons](#benchmarks--comparisons) — official numbers and community measurements
 - [Learning Resources](#learning-resources) — papers, docs, talks
@@ -66,6 +67,18 @@ Lifecycle management, containerd/Kubernetes integrations, and declarative fleet 
 - [firectl](https://github.com/firecracker-microvm/firectl) — Simple CLI for launching raw Firecracker microVMs without containerd. Console access; disk and network configuration; thin wrapper over the Firecracker API; maintenance mode (last tagged release v0.2.0, 2022 — dependency/CVE upkeep only, not archived). ⚠️ License Apache-2.0 reported, not re-verified from primary files.
 - [microvm.nix](https://github.com/microvm-nix/microvm.nix) — NixOS-based declarative orchestration for microVM fleets. Declarative NixOS VM definitions; backends: QEMU, Cloud Hypervisor, Firecracker, crosvm, kvmtool, StratoVirt, Alioth, vfkit; shares the host nix store via virtio-fs/9p. ⚠️ License not verified.
 - [Apple Containerization](https://github.com/apple/containerization) — Apple's 2025 open-source Swift framework for running Linux containers in lightweight VMs on macOS. Purpose-built lightweight Linux VM per container on Apple Silicon; OCI image support; native macOS integration. ⚠️ Details and license (Apache-2.0) not verified from primary sources this pass.
+
+---
+
+## MicroVMs on macOS
+
+Apple Silicon Macs can't run KVM, so the microVM story on macOS goes through Apple's Virtualization.framework (and Hypervisor.framework for lower-level VMMs). These projects bring microVM-style sandboxes to the Mac:
+
+- [shuru](https://github.com/superhq-ai/shuru) — Local-first microVM sandbox for running AI agents safely on macOS, with experimental Linux support. Boots lightweight Linux VMs via Apple's Virtualization.framework on macOS 14+ (Apple Silicon); a KVM backend for Linux ARM64 hosts is experimental. Every sandbox is ephemeral — the rootfs resets on every run; checkpoints save reusable environments; VirtioFS directory mounts (read-only by default, writes go to a discarded overlay); vsock port forwarding with no network device needed; secrets stay on the host via an HTTPS substitution proxy; per-host network allowlists; TypeScript SDK and an agent skill so Claude Code, Cursor, and Copilot use it automatically. Install via Homebrew (`superhq-ai/tap`). Language Rust. License Apache-2.0 (verified).
+- [vfkit](https://github.com/crc-org/vfkit) — Minimal command-line hypervisor and Go API wrapping Apple's Virtualization.framework to run Linux VMs on macOS. Small, auditable Go codebase; adopted by Podman 5.0+, minikube, and CRC. Language Go. License Apache-2.0 (verified).
+- [Tart](https://github.com/openai/tart) — Virtualization toolset to build, run, and manage macOS and Linux VMs on Apple Silicon for CI and automation. Near-native performance via Virtualization.framework; push/pull VMs from any OCI-compatible container registry; Packer plugin for VM creation; aimed at CI/CD and reproducible dev environments (macOS 13+). Note: the repo moved from `cirruslabs/tart` to `openai/tart`. Language Swift. ⚠️ License is Fair Source (not OSI-approved; GitHub reports NOASSERTION).
+- [Lima](https://github.com/lima-vm/lima) — Lightweight Linux VMs with automatic file sharing and port forwarding (WSL2-style) for running containerd, Docker, Podman, or Kubernetes on a Mac. Uses the vz (Virtualization.framework) driver by default on macOS, with an opt-in krunkit driver. CNCF project. ⚠️ License Apache-2.0 reported, not re-verified from primary files.
+- Also on macOS: [Apple Containerization](#orchestration--integration) runs each Linux container in its own lightweight VM on Apple Silicon, and the [libkrun](#microvms--lightweight-vmms) family (libkrun, krunvm, krunkit) supports macOS via Hypervisor.framework on ARM64.
 
 ---
 
