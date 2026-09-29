@@ -44,6 +44,17 @@ Pick the VMM by the workload, not the hype. All five scenarios below are about *
 - **uhyve** — specialized hypervisor for HermitOS (Rust library OS) unikernels; network/filesystem hypercalls instead of device emulation; x86_64, aarch64, riscv64 guests.
 - **Hyperlight-Unikraft** — ordinary Linux programs on a Unikraft guest kernel under Hyperlight, with snapshot support.
 
+## 6. macOS hosts
+
+**Profile:** Apple Silicon Mac — no KVM, so everything goes through Apple's Virtualization.framework (or Hypervisor.framework for lower-level VMMs).
+
+- **shuru** — the microVM-native answer for AI agent sandboxes on the Mac: ephemeral Linux microVMs with checkpoints, VirtioFS mounts, vsock port forwarding, and a secrets proxy.
+- **Apple Containerization** — one lightweight Linux VM per container; the OCI-native route.
+- **vfkit** — minimal Virtualization.framework wrapper (CLI + Go API); what Podman and minikube build on.
+- **Tart** — full macOS *and* Linux VMs on Apple Silicon, OCI-registry-distributed, CI-focused. Note the Fair Source license.
+- **Lima** — WSL2-style Linux dev VMs with file sharing and port forwarding; vz driver by default.
+- **libkrun family** (libkrun, krunvm, krunkit) — Hypervisor.framework backend on ARM64 Macs.
+
 ## Building blocks
 
 - **rust-vmm** — the shared Rust crates (KVM bindings, virtio, vhost, device models) underneath Firecracker, Cloud Hypervisor, crosvm, StratoVirt, and Dragonball. Start here if you're *writing* a VMM.
